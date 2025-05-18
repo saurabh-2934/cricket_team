@@ -29,12 +29,15 @@ initializeDBAndServer()
 
 app.get('/players/', async (request, response) => {
   const cricektTeamInfo = `
-    SELECT 
-      *
-    FROM 
-      cricket_team
-    ORDER BY
-      player_id;`
+   SELECT 
+       player_id AS playerId,
+       player_name AS playerName,
+       jersey_number AS jerseyNumber,
+       role AS role
+     FROM 
+       cricket_team
+     ORDER BY
+       player_id;`;
   const dbResponse = await db.all(cricektTeamInfo)
   response.send(dbResponse)
 })
@@ -56,15 +59,18 @@ app.post('/players/', async (request, response) => {
 })
 
 app.get('/players/:playerId/', async (request, response) => {
-  const {playerId} = request.params;
+  const {playerId} = request.params
 
   const cricektTeamInfo = `
-    SELECT
-      *
-    FROM
-      cricket_team
-    WHERE
-      player_id = ${playerId};`
+    SELECT 
+       player_id AS playerId,
+       player_name AS playerName,
+       jersey_number AS jerseyNumber,
+       role AS role
+     FROM 
+       cricket_team
+     WHERE 
+       player_id = ${playerId};`;
   const player_details = await db.get(cricektTeamInfo)
   response.send(player_details)
 })
